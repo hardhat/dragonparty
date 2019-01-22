@@ -64,7 +64,7 @@ void Tile::draw(int id,int col,int row)
     int y=row*tileHeight;
     if(id<0) return;    // blank spot
    	if(tileTextureMap.find(imageId)==tileTextureMap.end()) {
-		SDL_Rect rect={((x-8)*renderScale)+screenleft,((y-8)*renderScale)+screentop,(tileWidth*renderScale),(tileHeight*renderScale)};
+		SDL_Rect rect={(int)((x-8)*renderScale)+screenleft,(int)((y-8)*renderScale)+screentop,(int)(tileWidth*renderScale),(int)(tileHeight*renderScale)};
 		static int color=0;
 		Uint8 r=255*color/32, g=255, b=255;
 		color=(color+1)%32;
@@ -78,7 +78,7 @@ void Tile::draw(int id,int col,int row)
 	int tx=id%tilesAcross;
 	int ty=id/tilesAcross;
 	SDL_Rect srcRect={tx*tileWidth,ty*tileHeight,tileWidth,tileHeight};
-	SDL_Rect rect={((x-tileWidth/2)*renderScale)+screenleft,((y-tileHeight/2)*renderScale)+screentop,(tileWidth*renderScale),(tileHeight*renderScale)};
+	SDL_Rect rect={(int)((x-tileWidth/2)*renderScale)+screenleft,(int)((y-tileHeight/2)*renderScale)+screentop,(int)(tileWidth*renderScale),(int)(tileHeight*renderScale)};
     //if(rect.x>screenw || rect.y>screenh || rect.x-rect.w<0 || rect.y-rect.h<0) return;
 	SDL_RenderCopy(renderer, t->texture, &srcRect, &rect);
 }

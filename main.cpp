@@ -128,10 +128,42 @@ int main(int argc,char **argv)
                     // exit if ESCAPE is pressed
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                         done = true;
-		            game.handleAction(event.key.keysym.sym,true);
+                    switch(event.key.keysym.sym) {
+                    case SDLK_DOWN:
+                        game.handleAction(DPAD_DOWN,true);
+                        break;
+                    case SDLK_UP:
+                        game.handleAction(DPAD_UP,true);
+                        break;
+                    case SDLK_LEFT:
+                        game.handleAction(DPAD_LEFT,true);
+                        break;
+                    case SDLK_RIGHT:
+                        game.handleAction(DPAD_RIGHT,true);
+                        break;
+                    default:
+                        game.handleAction(event.key.keysym.sym,true);
+                    }
                     break;
                 }
             case SDL_KEYUP:
+                switch(event.key.keysym.sym) {
+                case SDLK_DOWN:
+                    game.handleAction(DPAD_DOWN,false);
+                    break;
+                case SDLK_UP:
+                    game.handleAction(DPAD_UP,false);
+                    break;
+                case SDLK_LEFT:
+                    game.handleAction(DPAD_LEFT,false);
+                    break;
+                case SDLK_RIGHT:
+                    game.handleAction(DPAD_RIGHT,false);
+                    break;
+                default:
+                    game.handleAction(event.key.keysym.sym,true);
+                }
+
 	            game.handleAction(event.key.keysym.sym,false);
             	break;
             case SDL_JOYBUTTONDOWN:

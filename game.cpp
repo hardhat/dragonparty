@@ -5,6 +5,8 @@
 #include "layer.h"
 #include "font.h"
 #include "sound.h"
+#include "actor.h"
+#include "player.h"
 
 Game game;
 
@@ -24,13 +26,13 @@ void Game::resetGame()
 {
     for(PlayerList::iterator p=playerList.begin();p!=playerList.end();p++) {
         Player *player=*p;
-        //delete player;
+        delete player;
     }
     playerList.clear();
 
     for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
-        Actor *eeemy=*p;
-        //delete enemy;
+        Actor *enemy=*p;
+        delete enemy;
     }
     enemyList.clear();
 
@@ -54,6 +56,8 @@ void Game::resetGame()
     fgLayer->load("data/level_foreground.csv");
     characterLayer->load("data/level_characters.csv");
     hobgoblinLayer->load("data/level_hobgoblin.csv");
+
+    playerList.push_back(new Player(tile));
 }
 
 void Game::update(int elapsed)
@@ -69,17 +73,20 @@ void Game::draw()
 
     for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
         Actor *enemy=*p;
-        //actor->draw();
+        enemy->draw();
     }
     for(PlayerList::iterator p=playerList.begin();p!=playerList.end();p++) {
         Player *player=*p;
-        //player->draw();
+        player->draw();
     }
 }
 
 void Game::handleAction(int id,bool down)
 {
-
+    if(playerList.size()>0) {
+        Player *player=playerList.front();
+        player->handleAction(id,down);
+    }
 }
 
 void Game::setMode(int newMode)

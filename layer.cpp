@@ -11,6 +11,7 @@ static void D(const char *format,const char *param) {
         }
 }
 
+#if 0
 static void D(const char *format,int param) {
         FILE *log=fopen("log.txt","a");
         if(log) {
@@ -26,6 +27,7 @@ static void D(const char *format,float param) {
             fclose(log);
         }
 }
+#endif
 
 Layer::Layer(Tile *tile) {
     this->tile=tile;
@@ -50,7 +52,6 @@ void Layer::load(const char *filename)
         D("Fatal: file not found '%s'\n",filename);
         return;
     }
-    D("Parsing %s\n",filename);
 
     int ch;
     int pos=0;
@@ -67,8 +68,6 @@ void Layer::load(const char *filename)
         }
     }
     fseek(file,0,SEEK_SET);
-    D("Width in tiles = %d\n",tw);
-    D("Height in tiles = %d\n",th);
     tileMap=new int[tw*th];
 
     char buf[64];
@@ -82,13 +81,11 @@ void Layer::load(const char *filename)
             int id=0;
             pos=0;
             sscanf(buf,"%d",&id);
-            D("%d,",id);
             setTile(x,y,id);
             x++;
             if(ch=='\n') {
                 x=0;
                 y++;
-                D("\nline%d:",y);
             }
         }
     }

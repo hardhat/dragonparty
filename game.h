@@ -6,11 +6,22 @@
 #include "layer.h"
 #include "tile.h"
 
-enum {
+enum GameMode {
     MODE_TITLE,
     MODE_CHOOSEAVATAR,
     MODE_LEVEL,
     MODE_GAMEOVER,
+};
+
+enum DPadKey {
+    DPAD_LEFT,
+    DPAD_UP,
+    DPAD_RIGHT,
+    DPAD_DOWN,
+    DPAD_A,
+    DPAD_B,
+    DPAD_SELECT=10,
+    DPAD_START,
 };
 
 class Player;
