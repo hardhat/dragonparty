@@ -43,7 +43,7 @@ Sprite::Sprite(const char *name)
 		fprintf(stderr,"Can't load image '%s'\n",path.c_str());
 		return;
 	}
-	
+
     SDL_Texture* tex = NULL;
     tex = SDL_CreateTextureFromSurface(renderer, bitmap);
 	Texture *texture=new Texture();
@@ -55,7 +55,7 @@ Sprite::Sprite(const char *name)
 	w=texture->w;
 	h=texture->h;
     SDL_FreeSurface(bitmap);
-    
+
     textureMap[spriteId]=texture;
     nameMap[name]=spriteId;
     imageId=spriteId;
@@ -74,7 +74,7 @@ void Sprite::update(int elapsed)
 void Sprite::draw()
 {
 	if(textureMap.find(imageId)==textureMap.end()) {
-		SDL_Rect rect={(int)((x-8)*renderScale)+screenleft,(int)((y-8)*renderScale)+screentop,(int)(16*renderScale),(int)(16*renderScale)};
+		SDL_Rect rect={(int)((x-8)*renderScale)+screenleft,(int)((y-8-maptop)*renderScale)+screentop,(int)(16*renderScale),(int)(16*renderScale)};
 		static int color=0;
 		Uint8 r=255*color/32, g=255, b=255;
 		color=(color+1)%32;
@@ -84,6 +84,6 @@ void Sprite::draw()
 	}
 
 	Texture *t=textureMap[imageId];
-	SDL_Rect rect={(int)((x-t->w/2)*renderScale)+screenleft,(int)((y-t->h/2)*renderScale)+screentop,(int)(t->w*renderScale),(int)(t->h*renderScale)};
+	SDL_Rect rect={(int)((x-t->w/2)*renderScale)+screenleft,(int)((y-t->h/2-maptop)*renderScale)+screentop,(int)(t->w*renderScale),(int)(t->h*renderScale)};
 	SDL_RenderCopy(renderer, t->texture, NULL, &rect);
 }

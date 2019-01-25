@@ -54,4 +54,8 @@ public:
 
 extern Game game;
 
+void D(const char *format,const char *param);
+void D(const char *format,int param);
+void D(const char *format,float param);
+
 #endif

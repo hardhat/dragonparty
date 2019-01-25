@@ -1,33 +1,8 @@
 #include<stdio.h>
 #include <SDL.h>
+#include "game.h"
 #include "tile.h"
 #include "layer.h"
-
-static void D(const char *format,const char *param) {
-        FILE *log=fopen("log.txt","a");
-        if(log) {
-            fprintf(log,format,param);
-            fclose(log);
-        }
-}
-
-#if 0
-static void D(const char *format,int param) {
-        FILE *log=fopen("log.txt","a");
-        if(log) {
-            fprintf(log,format,param);
-            fclose(log);
-        }
-}
-
-static void D(const char *format,float param) {
-        FILE *log=fopen("log.txt","a");
-        if(log) {
-            fprintf(log,format,param);
-            fclose(log);
-        }
-}
-#endif
 
 Layer::Layer(Tile *tile) {
     this->tile=tile;

@@ -1,3 +1,4 @@
+#include "main.h"
 #include "notice.h"
 #include "font.h"
 
@@ -14,7 +15,7 @@ Notice::Notice(float x,float y,const char *note)
 }
 
 void Notice::draw() {
-	drawMessage(FONT_NOTICE,message.c_str(),x,y);
+	drawMessage(FONT_NOTICE,message.c_str(),x,y+maptop);
 }
 
 void Notice::update(int elapsed) {

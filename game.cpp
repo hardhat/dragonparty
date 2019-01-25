@@ -57,13 +57,25 @@ void Game::resetGame()
     characterLayer->load("data/level_characters.csv");
     hobgoblinLayer->load("data/level_hobgoblin.csv");
 
-    playerList.push_back(new Player(tile));
+    Player *player=new Player(tile);
+    player->resetGame();
+    playerList.push_back(player);
 }
 
 void Game::update(int elapsed)
 {
     if(playerList.size()==0) return;
+    int cy;
+    cy=0;
+    for(PlayerList::iterator p=playerList.begin();p!=playerList.end();p++) {
+        Player *player=*p;
 
+        cy+=player->ty;
+    }
+    cy/=playerList.size();
+    maptop=(cy-7)*16;
+    if(maptop<0) maptop=0;
+    if(bgLayer && cy+15>bgLayer->th) maptop=(bgLayer->th-15)*16;
 }
 
 void Game::draw()
@@ -94,3 +106,26 @@ void Game::setMode(int newMode)
     mode=newMode;
 }
 
+void D(const char *format,const char *param) {
+        FILE *log=fopen("log.txt","a");
+        if(log) {
+            fprintf(log,format,param);
+            fclose(log);
+        }
+}
+
+void D(const char *format,int param) {
+        FILE *log=fopen("log.txt","a");
+        if(log) {
+            fprintf(log,format,param);
+            fclose(log);
+        }
+}
+
+void D(const char *format,float param) {
+        FILE *log=fopen("log.txt","a");
+        if(log) {
+            fprintf(log,format,param);
+            fclose(log);
+        }
+}

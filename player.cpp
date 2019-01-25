@@ -31,5 +31,5 @@ void Player::draw()
 
 void Player::handleAction(int id,bool down)
 {
-
+    Actor::handleAction(id,down);
 }
