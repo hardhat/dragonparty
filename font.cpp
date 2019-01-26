@@ -13,7 +13,7 @@ void initFont()
 	TTF_Init();
 
 	font[0]=TTF_OpenFont("data/Oswald-Bold.ttf",36);
-	font[1]=TTF_OpenFont("data/Oswald-Regular.ttf",18);
+	font[1]=TTF_OpenFont("data/Oswald-Regular.ttf",14);
 	font[2]=TTF_OpenFont("data/Oswald-Regular.ttf",18);
 	font[3]=TTF_OpenFont("data/Oswald-Regular.ttf",14);
 	printf("Font status: %s, %s, %s\n",font[0]?"yes":"no",font[1]?"yes":"no",font[2]?"yes":"no");

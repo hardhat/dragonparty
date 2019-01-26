@@ -20,6 +20,7 @@ public:
 	int attackTimer;
 	int attackRegenerateTime;
 	int mode;
+    bool spoke;
 
 	int resistance[6];	// percent of how resistant they are to various attacks
 

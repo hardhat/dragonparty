@@ -142,9 +142,9 @@ void Game::draw()
         for(PlayerList::iterator p=playerList.begin();p!=playerList.end();p++) {
             Player *player=*p;
             i++;
-            sprintf(buf,"P%d:%d",i,player->health);
+            sprintf(buf,"%d:%d",i,player->health);
             if(player->isAlive())
-                drawMessage(FONT_LABEL,buf,32*i,maptop+220);
+                drawMessage(FONT_BODY,buf,32*i,maptop+220);
         }
     }
 }

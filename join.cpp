@@ -41,6 +41,12 @@ void Join::draw()
 {
     maptop=0;
 
+    for(int j=0;j<4;j++) {
+        for(int i=0;i<4;i++) {
+            tile->draw(90+i+j*10,16+i,5+j);
+        }
+    }
+
     drawMessage(FONT_HEADLINE,"Select your player",10,-8);
     drawMessage(FONT_NOTICE,"Left and right then hit A",10,30);
 

@@ -84,6 +84,10 @@ void Actor::update(int elapsed)
             if(avatarId==76) sound.playOnce(SFX_WELCOME);
         }
 	}
+	if(avatarId==56 && !spoke && maptop<100*tile->tileHeight) {
+        spoke=true;
+        sound.playOnce(SFX_QUEST);
+	}
 
 	bool deadBullet=false;
 	for(BulletList::iterator p=bulletList.begin();p!=bulletList.end();p++) {
