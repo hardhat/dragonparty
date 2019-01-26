@@ -29,6 +29,7 @@ Actor::Actor(Tile *tile)
     ty=1;
     avatarWidth=1;
     avatarHeight=1;
+    spoke=false;
 }
 
 void Actor::resetGame()
@@ -44,6 +45,7 @@ void Actor::resetGame()
 	blockTimer=0;
 	attackTimer=0;
 	health=fullHealth;
+	spoke=false;
 
 	for(BulletList::iterator p=bulletList.begin();p!=bulletList.end();p++) {
 		Bullet *b=*p;
@@ -77,6 +79,10 @@ void Actor::update(int elapsed)
 
 	if(enemy) {
         enemyAttack();
+        if(!spoke && bulletList.size()>0) {
+            spoke=true;
+            if(avatarId==76) sound.playOnce(SFX_WELCOME);
+        }
 	}
 
 	bool deadBullet=false;
