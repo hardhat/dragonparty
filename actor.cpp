@@ -125,14 +125,20 @@ void Actor::draw()
 	//printf("%s: %d HP, %d ATK, %d BLK\n",enemy?"Dragon":"Player",health,attackTimer,blockTimer);
 	//printf("blockRegenerateTime=%d, attackRegenerateTime=%d\n",blockRegenerateTime, attackRegenerateTime);
 
-	if(blockTimer>0) {
-		tile->draw(shieldId,tx,ty);
-	}
 	if(health>0) {
-		tile->draw(avatarId,tx,ty);
+		for(int j=0;j<avatarHeight;j++) {
+            for(int i=0;i<avatarWidth;i++) {
+                tile->draw(avatarId,tx+i,ty+j);
+            }
+		}
 	} else if(health==0) {
 		tile->draw(avatarDeadId,tx,ty);
 	}
+
+    if(blockTimer>0) {
+        tile->draw(shieldId,tx,ty);
+	}
+
 	for(BulletList::iterator p=bulletList.begin();p!=bulletList.end();p++) {
 		Bullet *b=*p;
 		b->draw();

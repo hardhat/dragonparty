@@ -99,9 +99,9 @@ void Game::update(int elapsed)
     if(count>0 && !playersWin()) {
         totalTime+=elapsed;
         cy/=count;
-        maptop=(cy-7)*16;
+        maptop=(cy-10)*16;
         if(maptop<0) maptop=0;
-        if(bgLayer && cy-7+15>bgLayer->th) maptop=(bgLayer->th-15)*16;
+        if(bgLayer && cy-10+15>bgLayer->th) maptop=(bgLayer->th-15)*16;
     }
 }
 
@@ -143,6 +143,15 @@ void Game::draw()
         h=0;
         extentMessage(FONT_HEADLINE,"Players Lose",w,h);
         drawMessage(FONT_HEADLINE,"Players Lose",(screenw-w)/2,maptop+120);
+    } else {
+        int i=0;
+        for(PlayerList::iterator p=playerList.begin();p!=playerList.end();p++) {
+            Player *player=*p;
+            sprintf(buf,"%d:%d ",i+1,player->health);
+            if(player->isAlive()) count++; else continue;
+            i++;
+            drawMessage(FONT_NOTICE,buf,32*i,maptop+220);
+        }
     }
 }
 
@@ -289,6 +298,7 @@ void Game::spawnEnemies()
 
             Actor *enemy=new Actor(tile);
             enemy->enemy=true;
+            enemy->attackType=AT_FIRE;
             enemy->resetGame(x,y);
 
             if(id==76) {    // drahom
