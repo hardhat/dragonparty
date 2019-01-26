@@ -6,14 +6,17 @@
 class Join
 {
 public:
-    int active[6];
+    bool playerJoin[6];
+    bool playerDone[6];
 
-    Join();
+    Tile *tile;
+
+    Join(Tile *tile);
     virtual ~Join();
     virtual void resetGame();
     virtual void draw();
     virtual void update(int elapsed);
-    virtual void handleAction(int id, bool down);
+    virtual void handleAction(int which,int id, bool down);
 
 private:
 };

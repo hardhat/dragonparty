@@ -26,6 +26,7 @@ enum DPadKey {
 
 class Player;
 class Actor;
+class Join;
 
 typedef std::deque<Player *> PlayerList;
 typedef std::deque<Actor *> ActorList;
@@ -41,6 +42,8 @@ public:
     Layer *hobgoblinLayer;
     PlayerList playerList;
     ActorList enemyList;
+    Join *join;
+    int totalTime;
 
     Game();
     ~Game();
@@ -49,7 +52,16 @@ public:
     void setMode(int newMode);
     void update(int elapsed);
     void draw();
-    void handleAction(int id,bool down);
+    void handleAction(int which,int id,bool down);
+
+    bool playersWin();
+    bool enemiesActive();
+    bool canMoveTo(Player *player,int tx,int ty);
+    int canCollect(int tx,int ty);
+    int collect(int tx,int ty);
+    void spawnEnemies();
+    Actor *targetEnemy(Player *player);
+    Player *targetPlayer(Actor *enemy);
 };
 
 extern Game game;

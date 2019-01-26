@@ -52,7 +52,7 @@ void drawMessage(FontId fontId,const char *message,int x,int y)
 	}
 	surf=TTF_RenderText_Blended(font[fontId],message,fg);
 	rect.x=x*renderScale+screenleft;
-	rect.y=y*renderScale+screentop-maptop;
+	rect.y=(y-maptop)*renderScale+screentop;
 	rect.w=surf->w*renderScale;
 	rect.h=surf->h*renderScale;
 	//SDL_SetColorKey(surf, SDL_SRCCOLORKEY, 0);

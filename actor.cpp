@@ -11,14 +11,14 @@ Actor::Actor(Tile *tile)
 
 	attackType=AT_FORCE;
 	fullHealth=100;
-	attackRegenerateTime=2000;
+	attackRegenerateTime=1000;
 
 	for(int i=0;i<6;i++) {
 		resistance[i]=0;	// percent of how resistent they are to various attacks
 	}
 
 	blockType=AT_NONE;
-	blockRegenerateTime=2000;
+	blockRegenerateTime=1000;
 	enemy=false;
 
     avatarId=3;
@@ -58,6 +58,13 @@ void Actor::resetGame()
 
 }
 
+void Actor::resetGame(int x,int y)
+{
+    resetGame();
+    tx=x;
+    ty=y;
+}
+
 Actor::~Actor()
 {
 }
@@ -66,6 +73,10 @@ void Actor::update(int elapsed)
 {
 	if(attackTimer>=elapsed) attackTimer-=elapsed; else attackTimer=0;
 	if(blockTimer>=elapsed) blockTimer-=elapsed; else blockTimer=0;
+
+	if(enemy) {
+        enemyAttack();
+	}
 
 	bool deadBullet=false;
 	for(BulletList::iterator p=bulletList.begin();p!=bulletList.end();p++) {
@@ -148,7 +159,7 @@ void Actor::attack(Actor *target, bool heavy) {
 		attackTimer=attackRegenerateTime*(heavy?2:1);
 		//printf("Attack active for %d ms.\n",attackTimer);
 		float sx=0,sy=0,tx=0,ty=0;
-        sx=this->ty*tile->tileWidth;
+        sx=this->tx*tile->tileWidth;
         sy=this->ty*tile->tileHeight;
         tx=target->tx*tile->tileHeight;
         ty=target->ty*tile->tileWidth;
@@ -158,7 +169,7 @@ void Actor::attack(Actor *target, bool heavy) {
 
 void Actor::receiveAttack(int amount, AttackType type) {
 	float sx=0,sy=0;
-    sx=this->ty*tile->tileWidth;
+    sx=this->tx*tile->tileWidth;
     sy=this->ty*tile->tileHeight;
 
 	if(health==0) return;	// already dead.
@@ -201,14 +212,17 @@ void Actor::block(AttackType type) {
 
 void Actor::handleAction(int id,bool down)
 {
-    if(id==DPAD_LEFT && down && tx>0) tx--;
-    if(id==DPAD_RIGHT && down && tx<18) tx++;
-    if(id==DPAD_UP && down && ty>0) ty--;
-    if(id==DPAD_DOWN && down && ty<118) ty++;
-    if(id==DPAD_A) {
-        //attack(getTarget(),false);
-    }
-    if(id==DPAD_B) {
-        //attack(getTarget(),true);
+}
+
+void Actor::enemyAttack()
+{
+    if(health<100 && isAttackReady()) {
+        // if it is time attack, then we attack.
+        Actor *player=(Actor *)game.targetPlayer(this);
+        if(!player) return;
+
+        attack(player,mode<6);
+        mode++;
+        if(mode>=12) mode=0;
     }
 }

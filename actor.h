@@ -19,6 +19,7 @@ public:
 	AttackType attackType;
 	int attackTimer;
 	int attackRegenerateTime;
+	int mode;
 
 	int resistance[6];	// percent of how resistant they are to various attacks
 
@@ -42,6 +43,7 @@ public:
 	Actor(Tile *tile);
 	virtual ~Actor();
 	virtual void resetGame();
+	virtual void resetGame(int tx,int ty);
 	virtual void update(int elapse);
 	virtual void draw();
 	virtual void handleAction(int id,bool down);
@@ -51,6 +53,7 @@ public:
 	void attack(Actor *target,bool heavy);
 	void receiveAttack(int amount, AttackType type);
 	void block(AttackType type);
+	void enemyAttack();
 };
 
 #endif
