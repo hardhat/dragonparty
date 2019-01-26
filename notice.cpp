@@ -15,7 +15,7 @@ Notice::Notice(float x,float y,const char *note)
 }
 
 void Notice::draw() {
-	drawMessage(FONT_NOTICE,message.c_str(),x,y+maptop);
+	drawMessage(FONT_NOTICE,message.c_str(),x,y);
 }
 
 void Notice::update(int elapsed) {

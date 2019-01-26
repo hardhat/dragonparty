@@ -11,7 +11,7 @@ TTF_Font *font[4];
 void initFont()
 {
 	TTF_Init();
-	
+
 	font[0]=TTF_OpenFont("data/Oswald-Bold.ttf",36);
 	font[1]=TTF_OpenFont("data/Oswald-Regular.ttf",18);
 	font[2]=TTF_OpenFont("data/Oswald-Regular.ttf",18);
@@ -23,7 +23,7 @@ void extentMessage(FontId fontId,const char *message,int &w,int &h)
 {
 	w=0;
 	h=0;
-	
+
 	if(!font[fontId]) return;
 	TTF_SizeText(font[fontId],message,&w,&h);
 }
@@ -42,7 +42,7 @@ void drawMessage(FontId fontId,const char *message,int x,int y)
 		fg.b=96;
 		fg.g=128;
 	}
-	
+
 	if(!font[fontId]) {
 		static int count=0;
 		if(count<30)
@@ -52,7 +52,7 @@ void drawMessage(FontId fontId,const char *message,int x,int y)
 	}
 	surf=TTF_RenderText_Blended(font[fontId],message,fg);
 	rect.x=x*renderScale+screenleft;
-	rect.y=y*renderScale+screentop;
+	rect.y=y*renderScale+screentop-maptop;
 	rect.w=surf->w*renderScale;
 	rect.h=surf->h*renderScale;
 	//SDL_SetColorKey(surf, SDL_SRCCOLORKEY, 0);

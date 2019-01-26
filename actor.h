@@ -3,11 +3,14 @@
 
 #include <deque>
 
+
 #include "bullet.h"
 #include "notice.h"
 
 typedef std::deque<Bullet *> BulletList;
 typedef std::deque<Notice *> NoticeList;
+
+class Tile;
 
 class Actor {
 public:
