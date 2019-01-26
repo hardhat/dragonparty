@@ -257,7 +257,7 @@ void Actor::handleAction(int id,bool down)
 
 void Actor::enemyAttack()
 {
-
+    if(!enemy) return;
     if(isAttackReady()) {
         // if it is time attack, then we attack.
         if(avatarId==76) {

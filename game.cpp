@@ -176,6 +176,7 @@ bool Game::playersWin()
 
     for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
         Actor *enemy=*p;
+        if(!enemy->enemy) continue;
         if(enemy->isAlive()) count++;
     }
 
@@ -301,6 +302,7 @@ void Game::spawnEnemies()
             if(id==-1) continue;
             characterLayer->setTile(x,y,-1);
 
+            Actor *enemy=0;
             switch(id) {
             default:
                 continue;
@@ -308,13 +310,22 @@ void Game::spawnEnemies()
             case 61:    // goblin 2
             case 63:    // skeleton
             case 76:    // dragon
+                enemy=new Actor(tile);
+                enemy->enemy=true;
+                enemy->attackType=AT_FIRE;
+                enemy->resetGame(x,y);
+                break;
+            case 43:    // small girl
+            case 44:    // woman
+            case 55:    // old man
+            case 56:    // king
+                enemy=new Actor(tile);
+                enemy->enemy=false;
+                enemy->attackType=AT_FIRE;
+                enemy->resetGame(x,y);
                 break;
             }
 
-            Actor *enemy=new Actor(tile);
-            enemy->enemy=true;
-            enemy->attackType=AT_FIRE;
-            enemy->resetGame(x,y);
 
             if(id==76) {    // dragon
                 enemy->avatarWidth=2;
@@ -323,6 +334,14 @@ void Game::spawnEnemies()
                 characterLayer->setTile(x,y+1,-1);
                 characterLayer->setTile(x+1,y+1,-1);
                 enemy->fullHealth=200;
+                enemy->health=enemy->fullHealth;
+            } else if(id==70) {    // hobgoblin
+                enemy->avatarWidth=2;
+                enemy->avatarHeight=2;
+                characterLayer->setTile(x+1,y,-1);
+                characterLayer->setTile(x,y+1,-1);
+                characterLayer->setTile(x+1,y+1,-1);
+                enemy->fullHealth=100;
                 enemy->health=enemy->fullHealth;
             } else if(id==63) { // skeleton
                 enemy->fullHealth=30;
@@ -388,6 +407,7 @@ Actor *Game::targetEnemy(Player *player)
     for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
         Actor *enemy=*p;
 
+        if(!enemy->enemy) continue;
         if(!enemy->isAlive()) continue;
 
         if(!closest) {
@@ -421,6 +441,7 @@ bool Game::enemyOnScreen()
     for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
         Actor *enemy=*p;
 
+        if(!enemy->enemy) continue;
         if(!enemy->isAlive()) continue;
 
         if(enemy->ty*tile->tileHeight>maptop &&
