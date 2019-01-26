@@ -41,8 +41,8 @@ void Join::draw()
 {
     maptop=0;
 
-    drawMessage(FONT_HEADLINE,"Select your player",10,-4);
-    drawMessage(FONT_LABEL,"Left and right then hit A",10,32);
+    drawMessage(FONT_HEADLINE,"Select your player",10,-8);
+    drawMessage(FONT_NOTICE,"Left and right then hit A",10,30);
 
     for(int i=0;i<6;i++) {
         char buffer[256];

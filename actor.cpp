@@ -92,7 +92,9 @@ void Actor::update(int elapsed)
 			if(b->isActive()) {
 				bulletList.push_back(b);
 			} else {
-                b->target->receiveAttack(b->damage,b->attackType);
+			    if(b->target->attackInRange(b)) {
+                    b->target->receiveAttack(b->damage,b->attackType);
+			    }
 				delete b;	// all done.
 			}
 		}
@@ -197,6 +199,14 @@ void Actor::receiveAttack(int amount, AttackType type) {
 		sound.playOnce(SFX_HAH);
 		noticeList.push_back(new Notice(sx,sy,"Blocked"));
 	}
+}
+
+bool Actor::attackInRange(Bullet *b)
+{
+    float dx=b->x-(this->tx*tile->tileWidth);
+    float dy=b->y-(this->ty*tile->tileHeight);
+
+    return dx*dx+dy*dy<24*24;
 }
 
 void Actor::block(AttackType type) {

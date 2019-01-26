@@ -330,7 +330,7 @@ Player *Game::targetPlayer(Actor *enemy)
             dx=player->tx-enemy->tx;
             dy=player->ty-enemy->ty;
             closestDist=dx*dx+dy*dy;
-            if(dist>8*8) continue;
+            if(closestDist>8*8) continue;
             closest=player;
             continue;
         }
@@ -339,7 +339,7 @@ Player *Game::targetPlayer(Actor *enemy)
         dx=player->tx-enemy->tx;
         dy=player->ty-enemy->ty;
         dist=dx*dx+dy*dy;
-        if(dist>8*8) continue;
+        if(dist>6*6) continue;
         if(dist<closestDist) {
             closest=player;
             closestDist=dist;

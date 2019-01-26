@@ -52,6 +52,7 @@ public:
 	bool isAttackReady();
 	void attack(Actor *target,bool heavy);
 	void receiveAttack(int amount, AttackType type);
+	bool attackInRange(Bullet *b);
 	void block(AttackType type);
 	void enemyAttack();
 };

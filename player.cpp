@@ -50,11 +50,12 @@ void Player::handleAction(int id,bool down)
     else if(id==DPAD_DOWN && down && ty<118) y++;
     else if(id==DPAD_A) {
         Actor *target=game.targetEnemy(this);
-        if(target) attack(target,false);
+        if(target) attack(target,true);
     }
     else if(id==DPAD_B) {
-        Actor *target=game.targetEnemy(this);
-        if(target) attack(target,true);
+        //Actor *target=game.targetEnemy(this);
+        //if(target) attack(target,true);
+        block(AT_FORCE);
     }
 
     if(x!=tx || y!=ty) {
