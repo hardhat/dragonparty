@@ -57,11 +57,13 @@ public:
     bool playersWin();
     bool enemiesActive();
     bool canMoveTo(Player *player,int tx,int ty);
+    bool isObstacle(int tx,int ty);
     int canCollect(int tx,int ty);
     int collect(int tx,int ty);
     void spawnEnemies();
     Actor *targetEnemy(Player *player);
     Player *targetPlayer(Actor *enemy);
+    bool enemyOnScreen();
 };
 
 extern Game game;

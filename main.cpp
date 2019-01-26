@@ -16,7 +16,7 @@ float renderScale=1;
 int screenleft=0;
 int screentop=0;
 int screenw,screenh;
-int maptop=0;
+int maptop=120*16;
 
 int main(int argc,char **argv)
 {
@@ -159,6 +159,9 @@ int main(int argc,char **argv)
                         break;
                     case SDLK_SPACE:
                         game.handleAction(0,DPAD_SELECT,true);
+                        break;
+                    case SDLK_RETURN:
+                        game.resetGame();
                         break;
                     default:
                         game.handleAction(0,event.key.keysym.sym,true);

@@ -38,11 +38,6 @@ void Game::resetGame()
     }
     enemyList.clear();
 
-    if(hobgoblinLayer) {
-        delete hobgoblinLayer;
-        hobgoblinLayer=0;
-    }
-
     if(!tile) {
         tile=new Tile("DRAGON_by_Mike_Hackett_alpha.png",16,16);
         bgLayer=new Layer(tile);
@@ -51,7 +46,6 @@ void Game::resetGame()
         hobgoblinLayer=new Layer(tile);
         join=new Join(tile);
     }
-
 
     bgLayer->load("data/level_background.csv");
     fgLayer->load("data/level_foreground.csv");
@@ -147,10 +141,10 @@ void Game::draw()
         int i=0;
         for(PlayerList::iterator p=playerList.begin();p!=playerList.end();p++) {
             Player *player=*p;
-            sprintf(buf,"%d:%d ",i+1,player->health);
-            if(player->isAlive()) count++; else continue;
             i++;
-            drawMessage(FONT_NOTICE,buf,32*i,maptop+220);
+            sprintf(buf,"P%d:%d",i,player->health);
+            if(player->isAlive())
+                drawMessage(FONT_LABEL,buf,32*i,maptop+220);
         }
     }
 }
@@ -221,7 +215,7 @@ bool Game::canMoveTo(Player *player,int tx,int ty)
     // check foreground
     id=fgLayer->getTile(tx,ty);
     if(id!=-1) {
-        if(!canCollect(tx,ty)) return false;    // solid barrier
+        if(isObstacle(tx,ty)) return false;    // solid barrier
     }
     // check for enemy
     for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
@@ -245,6 +239,27 @@ bool Game::canMoveTo(Player *player,int tx,int ty)
     return true;
 }
 
+bool Game::isObstacle(int tx,int ty)
+{
+    // check for map obstacles.
+    int id=fgLayer->getTile(tx,ty);
+    switch(id) {
+    case 31:    // gate door
+    case 45:    // fish
+        return false;
+    case 12:    // secret exit
+    case 21:    // goblet on table
+    case 32:    // building door
+    case 22:    // candles
+        if(enemyOnScreen()) return true;   // need to defeat enemies first
+        return false;
+    case 20:    // chair
+        return false;
+    }
+
+    return false;
+}
+
 int Game::canCollect(int tx,int ty)
 {
     // check for map obstacles.
@@ -257,7 +272,7 @@ int Game::canCollect(int tx,int ty)
     case 21:    // goblet on table
     case 32:    // building door
     case 22:    // candles
-        if(enemyList.size()>0) return -1;   // need to defeat enemies first
+        if(enemyOnScreen()) return -1;   // need to defeat enemies first
         break;
     case 20:    // chair
         return -1;
@@ -277,7 +292,7 @@ int Game::collect(int tx,int ty)
 
 void Game::spawnEnemies()
 {
-   int tileY=maptop/16+1;
+    int tileY=maptop/16+1;
 
     for(int y=tileY;y<tileY+15;y++) {
         for(int x=0;x<characterLayer->tw;x++) {
@@ -301,7 +316,7 @@ void Game::spawnEnemies()
             enemy->attackType=AT_FIRE;
             enemy->resetGame(x,y);
 
-            if(id==76) {    // drahom
+            if(id==76) {    // dragon
                 enemy->avatarWidth=2;
                 enemy->avatarHeight=2;
                 characterLayer->setTile(x+1,y,-1);
@@ -310,10 +325,10 @@ void Game::spawnEnemies()
                 enemy->fullHealth=200;
                 enemy->health=enemy->fullHealth;
             } else if(id==63) { // skeleton
-                enemy->fullHealth=10;
+                enemy->fullHealth=30;
                 enemy->health=enemy->fullHealth;
             } else {    // goblins etc.
-                enemy->fullHealth=25;
+                enemy->fullHealth=20;
                 enemy->health=enemy->fullHealth;
             }
             enemy->avatarId=id;
@@ -340,7 +355,12 @@ Player *Game::targetPlayer(Actor *enemy)
             dx=player->tx-enemy->tx;
             dy=player->ty-enemy->ty;
             closestDist=dx*dx+dy*dy;
-            if(closestDist>8*8) continue;
+            if(enemy->avatarId==76) {
+                if(closestDist>15*15) continue;
+            } else {
+                if(closestDist>8*8) continue;
+            }
+
             closest=player;
             continue;
         }
@@ -349,7 +369,7 @@ Player *Game::targetPlayer(Actor *enemy)
         dx=player->tx-enemy->tx;
         dy=player->ty-enemy->ty;
         dist=dx*dx+dy*dy;
-        if(dist>6*6) continue;
+        if(dist>8*8) continue;
         if(dist<closestDist) {
             closest=player;
             closestDist=dist;
@@ -371,11 +391,13 @@ Actor *Game::targetEnemy(Player *player)
         if(!enemy->isAlive()) continue;
 
         if(!closest) {
-            closest=enemy;
             float dx,dy;
             dx=player->tx-enemy->tx;
             dy=player->ty-enemy->ty;
             closestDist=dx*dx+dy*dy;
+            if(closestDist>10*10) continue;
+            closest=enemy;
+
             continue;
         }
         float dist;
@@ -390,6 +412,22 @@ Actor *Game::targetEnemy(Player *player)
     }
 
     return closest;
+}
+
+bool Game::enemyOnScreen()
+{
+    if(enemyList.empty()) return false;
+
+    for(ActorList::iterator p=enemyList.begin();p!=enemyList.end();p++) {
+        Actor *enemy=*p;
+
+        if(!enemy->isAlive()) continue;
+
+        if(enemy->ty*tile->tileHeight>maptop &&
+           enemy->ty*tile->tileHeight<=maptop+240)
+            return true;
+    }
+    return false;
 }
 
 void D(const char *format,const char *param) {
